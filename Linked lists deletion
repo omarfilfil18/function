@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+//Definiton of a "node"
+typedef struct node
+{
+    char *word;
+    struct node *next;
+}
+node;
+
+//Definition of a "person" (according to lab5 inheritance from CS50) (similar to a "node")
+typedef struct person
+{
+    char arr[2];
+    struct person *parents[2];
+}
+person;
+
+//Delete a linked list
+void free_llist(node *n)
+{
+    //Base Case.
+    if(n == NULL)
+    {
+        return;
+    }
+
+    //Check if the linked list has only one node and in this case we will free the node without worrying about others.
+    //If the linked list has more than one node we use recursion until we reach NULL (base case).
+    if(n->next == NULL)
+    {
+        free(n);
+    }
+    else
+    {
+        free_llist(n->next);
+        free(n);
+    }
+}
+
+
+// another example(version) of this simple syntax to delete linked lists 
+//This one can be used to delete tries but with some modification of course
+void free_person(person *p)
+{
+    //Base case
+    if(p == NULL)
+    {
+        return;
+    }
+
+    if(p->parents[0] == NULL && p->parents[1] == NULL)
+    {
+        free(p);
+    }
+    else
+    {
+        free_person(p->parents[0]);
+        free_person(p->parents[1]);
+        free(p);
+    }
+}
